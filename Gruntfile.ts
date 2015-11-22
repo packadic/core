@@ -5,6 +5,9 @@ import * as path from 'path'
 import * as _ from 'lodash';
 import * as util from 'util';
 import * as _s from 'underscore.string';
+import * as sass from 'node-sass';
+import * as chalk from 'chalk';
+
 
 require('ts-node').register();
 
@@ -52,7 +55,7 @@ function modifyGrunt(grunt) {
     grunt.config.process = process;
 }
 
-export = function (grunt) {
+export = function (grunt:IGrunt) {
 
     modifyGrunt(grunt);
     var watchTS = grunt.option('watcher') == 'ts';
@@ -67,7 +70,7 @@ export = function (grunt) {
     }
 
     function ifTarget(name:string, then:any, els:any = false):any {
-        return () => grunt.config.get("target").name === name ? then : els;
+        return () => grunt.config.get("target")['name'] === name ? then : els;
     }
 
     function tsp(...filePath:any[]) {
@@ -82,7 +85,7 @@ export = function (grunt) {
     var config = {
         pkg: fs.readJSONSync('package.json'),
 
-        target : targets[grunt.option('target') || 'dev'],
+        target : targets[<string> grunt.option('target') || 'dev'],
         targets: targets,
 
         clean: {
@@ -111,7 +114,6 @@ export = function (grunt) {
         jade: {
             options: {
                 pretty: true, data: { _inspect: util.inspect, _target: '<%= target %>', baseHref: '/'}
-
             },
             index  : {src: 'src/index.jade', dest: '<%= target.dest %>/index.html'},
             scripts: {files: [{expand: true, cwd: 'src/scripts', src: ['**/*.jade', '!**/_*.jade'], ext: '.html', dest: '<%= target.scripts %>/'}]}
@@ -140,7 +142,6 @@ export = function (grunt) {
                 htmlVarTemplate       : '<%= filename %>',
                 htmlOutputTemplate    : "namespace packadic { templates['<%= modulename %>'] = '<%= content %>'; }"
             },
-            //packadic: {options: {declaration: true}, outDir: '<%= target.scripts %>/packadic',src    : [tsp('packadic', 'types.d.ts'), tsp('packadic', '**/*.ts')] //, tsp('packadic', 'util/*.ts'), tsp('packadic', 'app/*.ts'), tsp('packadic', '~bootstrap.ts')]},
             packadic: {
                 options: {declaration: true},
                 out    : '<%= target.scripts %>/packadic.js',
@@ -160,27 +161,6 @@ export = function (grunt) {
             demo    : {
                 outDir: '<%= target.scripts %>/demo',
                 src   : ['src/types.d.ts', tsp('demo', '**', '*.ts')]
-            }
-        },
-
-
-        umd: {
-            packadic: {
-                options: {
-                    src: '<%= target.scripts %>/packadic.js',
-                    //template: 'path/to/template.hbs', // optional, a template from templates subdir
-                    // can be specified by name (e.g. 'umd'); if missing, the templates/umd.hbs
-                    // file will be used from [libumd](https://github.com/bebraw/libumd)
-                    objectToExport: 'packadic', // optional, internal object that will be exported
-                    //amdModuleId: 'packadic', // optional, if missing the AMD module will be anonymous
-                    //globalAlias: 'alias', // optional, changes the name of the global variable
-                    //deps: { // optional, `default` is used as a fallback for rest!
-                    //    'default': ['foo', 'bar'],
-                    //    amd: ['foobar', 'barbar'],
-                    //    cjs: ['foo', 'barbar'],
-                    //    global: ['foobar', {depName: 'param'}]
-                    //}
-                }
             }
         },
 
@@ -264,6 +244,27 @@ export = function (grunt) {
 
         ['serve', 'Dont use this', ['connect:dev', 'watch']],
 
+        ['sassdeps', 'Copies scss dependencies to dist target', /** @lends grunt.task.IMultiTask */ function() {
+            var taskDone:any = this.async();
+            sass.render({
+                file: 'src/styles/stylesheet.scss'
+            }, (err:sass.SassError, res:sass.Result) => {
+                if(err) {
+                    grunt.log.error(err.message);
+                    return taskDone(false);
+                }
+                var files:string[] = [];
+                res.stats.includedFiles.forEach((filePath:string) => {
+                    filePath = filePath.replace(process.cwd() + '/', '');
+                    if(filePath.slice(0, 3) === 'src') return;
+                    files.push(filePath);
+                    fs.copySync(filePath, path.join('dist', filePath));
+                    grunt.log.verbose.writeln('Copied file ' + filePath);
+                });
+                grunt.log.ok('Copied ' + files.length + ' sass dependencies to target');
+                taskDone();
+            });
+        } ],
         ['config', 'Show config', (target?:string) => log(grunt.config.get(target))],
         ['target', 'Set target trough task', (targ) => setTarget(targ)],
         ['jspm', 'Link or copy the jspm_packages folder to the target destination', () => {

@@ -1,25 +1,40 @@
 {
-    "name": "packadic-core",
-    "version": "0.1.0",
-    "description": "Packadic Core",
-    "keywords": [
-        "packadic"
-    ],
-    "author": "Robin RAdic",
-    "license": "MIT",
-    "main": "dist/js/packadic.js",
-    "authors": [
-        "Robin Radic <robin@radic.nl>"
-    ],
-    "homepage": "https://github.com/packadic/core",
-    "moduleType": [
-        "globals"
-    ],
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-    ]
+  "name": "packadic-core",
+  "version": "0.1.0",
+  "description": "Packadic Core",
+  "keywords": [
+    "packadic"
+  ],
+  "author": "Robin RAdic",
+  "license": "MIT",
+  "main": "dist/js/packadic.js",
+  "authors": [
+    "Robin Radic <robin@radic.nl>"
+  ],
+  "homepage": "https://github.com/packadic/core",
+  "moduleType": [
+    "globals"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+      "jspm_packages",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "eventemitter2": "~0.4.14",
+    "font-awesome": "~4.4.0",
+    "jquery": "~2.1.4",
+    "lodash": "~3.10.1",
+    "loglevel": "~1.4.0",
+    "observe-js": "~0.5.7",
+    "jmPagination": "pagination#~2.4.2",
+    "tether": "~1.1.1",
+    "underscore.string": "~3.2.2",
+    "vue": "~1.0.8",
+    "vue-resource": "~0.1.17",
+    "vue-router": "~0.7.6"
+  }
 }

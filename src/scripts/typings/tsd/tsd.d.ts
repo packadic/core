@@ -12,3 +12,5 @@
 /// <reference path="tether/tether.d.ts" />
 /// <reference path="bootstrap/bootstrap.d.ts" />
 /// <reference path="jquery/jquery.d.ts" />
+/// <reference path="node-sass/node-sass.d.ts" />
+/// <reference path="chalk/chalk.d.ts" />
