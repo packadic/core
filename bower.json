@@ -1,8 +1,10 @@
 {
     "name": "packadic-core",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Packadic Core",
-    "keywords": ["packadic"],
+    "keywords": [
+        "packadic"
+    ],
     "author": "Robin RAdic",
     "license": "MIT",
     "main": "dist/js/packadic.js",
