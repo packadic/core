@@ -1,0 +1,108 @@
+include ../_base
+- var bodyClass = 'page-header-fixed page-footer-fixed page-edged page-sidebar-condensed'
+- var sidebarClass = ''
+- var pageHeadClass = ''
+- var pageHeaderClass = 'navbar-fixed-top';
+- rootPath = rootPath || '';
+- var assetPath = rootPath + 'assets/';
+- var themeStyle = 'codex';
+block vars
+doctype html
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html lang="en" class="ie9"><![endif]-->
+<!--[if !IE]><!-->
+html(lang="en")
+    <!--<![endif]-->
+    head
+        block head
+            title
+                block title
+                    |  !{typeof config !== 'undefined' ? config.title : 'Default'}
+            block meta
+                meta(charset="UTF-8")
+                meta(name="viewport", content="width=device-width, initial-scale=1")
+                meta(http-equiv="X-UA-Compatible", content="IE=edge")
+                base(href=baseHref)
+
+            block styles
+                // injector:css
+                // endinjector
+
+            block scripts
+                // injector:js
+                // endinjector
+                script.
+                    System.import('demo').catch(function (e) {
+                        console.error(e);
+                    });
+
+
+    block body
+        body.page-loading(v-page-loader="showPageLoader", v-el:body)
+            #page-loader(v-if="showPageLoader", transition="fade")
+                .loader.loader-page
+
+            block page-header
+                .page-header.navbar(v-if="!showPageLoader", transition="fade", v-bind:class="{ 'navbar-fixed-top': layoutStyle.header.fixed }", v-el:header)
+                    block page-header-inner
+                        .page-header-inner(v-el:header-inner)
+                            block header-logo
+                                .page-logo
+                                    .logo-packadic.pull-left(v-html="layout.header.title")
+                                        block header-logo-inner
+                                            | Codex
+                                    block header-sidebar-toggler
+                                        .menu-toggler.sidebar-toggler(v-sidebar, s-action="toggle", s-on="click", v-tooltip, title='Toggle the sidebar menu', t-placement='left')
+
+                            block header-actions
+                                .page-actions
+                                    include ../partials/header-actions
+
+                            block header-responsive-toggler
+                                a(href='javascript:;', data-toggle='collapse', data-target='.navbar-collapse').menu-toggler.responsive-toggler
+
+                            block header-right
+                                .pull-right
+                                    .nav-link.quick-sidebar-toggler(data-layout-api='qs-toggle', v-tooltip, title='Toggle the quick sidebar menu', t-placement='left', t-offset='0 10px')
+
+                .clearfix
+
+
+
+            block page-container
+                .page-container(v-if="!showPageLoader", transition="fade", v-el:container)
+                    .page-sidebar-wrapper(v-el:sidebar-wrapper)
+                        block page-sidebar
+                            sidebar(:items="sidebar.items", v-ref:sidebar, v-el:sidebar)
+
+                            //sidebar(v-ref:sidebar)
+                                item(title="Hello", icon="fa fa-github", children=true)
+                                    item(title="First child")
+
+                    .page-content-wrapper(v-el:content-wrapper)
+                        .page-content(v-page-height-resizer, v-el:content)
+                            block page-content
+                                .page-head(class=pageHeadClass)
+                                    .page-title
+                                        h1
+                                            block page-title
+                                ul.page-breadcrumb.breadcrumb
+                                    block breadcrumb
+                                .page-content-seperator
+                                .page-content-inner
+                                    block content
+
+
+            block page-footer
+                .page-footer(v-if="!showPageLoader", transition="fade", v-el:footer)
+                    .page-footer-inner(v-html="layout.footer.text", v-el:footer-inner)
+                        - var year = (new Date()).getFullYear()
+                        | Copyright &copy; Codex #{year}
+                    block scroll-to-top
+                        .scroll-to-top
+                            i.fa.fa-level-up
+
+
+
+
+            aside

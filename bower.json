@@ -1,0 +1,21 @@
+{
+  "name": "packadic-core",
+    "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Robin Radic <robin@radic.nl>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/packadic/framework",
+  "moduleType": [
+    "globals"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
