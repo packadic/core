@@ -1,6 +1,6 @@
 {
   "name": "packadic-core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Packadic Core",
   "keywords": [
     "packadic"
@@ -18,7 +18,7 @@
   "ignore": [
     "**/.*",
     "node_modules",
-      "jspm_packages",
+    "jspm_packages",
     "bower_components",
     "test",
     "tests"
