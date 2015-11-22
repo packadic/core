@@ -237,7 +237,7 @@ export = function (grunt:IGrunt) {
             'target:dist',
             'clean:all',
             'ts:packadic', 'copy:typings', 'uglify:scripts',
-            'sass:styles', 'sass:styles_min', 'copy:scss',
+            'sass:styles', 'sass:styles_min', 'copy:scss', 'sassdeps',
             'jade:index', 'injector:index',
             'bytesize:packadic'
         ]],
