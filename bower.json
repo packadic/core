@@ -1,11 +1,11 @@
 {
-  "name": "packadic-core",
-  "version": "0.2.1",
-  "description": "Packadic Core",
+  "name": "sebwite-admin-theme-core",
+  "version": "0.0.1",
+  "description": "Sebwite admin theme Core",
   "keywords": [
-    "packadic"
+    "sebwite"
   ],
-  "author": "Robin RAdic",
+  "author": "Sebwite",
   "license": "MIT",
   "main": "dist/js/packadic.js",
   "authors": [

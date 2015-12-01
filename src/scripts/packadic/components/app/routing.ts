@@ -29,7 +29,6 @@ namespace packadic {
         return <ILink> link;
     };
 
-
     @Component('alink')
     export class LinkComponent extends BaseComponent implements ILink {
 
